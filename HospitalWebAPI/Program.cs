@@ -26,6 +26,10 @@ builder.Services.AddScoped<MedicoService>();
 builder.Services.AddScoped<ICitaRepository, CitaRepository>();
 builder.Services.AddScoped<CitaService>();
 
+// ESPECIALIDADES
+builder.Services.AddScoped<IEspecialidadRepository, EspecialidadRepository>();
+builder.Services.AddScoped<EspecialidadService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
