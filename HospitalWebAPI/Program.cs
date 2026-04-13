@@ -30,12 +30,25 @@ builder.Services.AddScoped<CitaService>();
 builder.Services.AddScoped<IEspecialidadRepository, EspecialidadRepository>();
 builder.Services.AddScoped<EspecialidadService>();
 
+// 1. Definir la política de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirTodo", policy =>
+    {
+        policy.SetIsOriginAllowed(_ => true)  // Permite cualquier origen incluyendo null (archivos locales)
+              .AllowAnyHeader()   // Permite cualquier encabezado
+              .AllowAnyMethod()   // Permite GET, POST, PUT, DELETE
+              .AllowCredentials(); // Permite credenciales
+    });
+});
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseCors("PermitirTodo");
 
 app.UseHttpsRedirection();
 

@@ -1,1 +1,71 @@
-<!-- archivo -->
+<script src="js/pacientes.js"></script>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantenimiento de Pacientes</title>
+</head>
+<body>
+
+    <h1>Gestión de Pacientes</h1>
+
+    <!-- Controles para agregar/actualizar registros -->
+    <div id="formulario">
+        <h3>Datos del Paciente</h3>
+        <!-- Campo oculto para el ID al modificar -->
+        <input type="hidden" id="txtId">
+        
+        <label for="txtNombre">Nombre:</label>
+        <input type="text" id="txtNombre">
+        <br><br>
+        
+        <label for="txtApellido">Apellido:</label>
+        <input type="text" id="txtApellido">
+        <br><br>
+
+        <label for="txtDNI">DNI (Identidad):</label>
+        <input type="text" id="txtDNI">
+        <br><br>
+
+        <label for="txtFechaNacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="txtFechaNacimiento">
+        <br><br>
+
+        <label for="txtTelefono">Teléfono:</label>
+        <input type="text" id="txtTelefono">
+        <br><br>
+
+        <label for="chkActivo">Activo:</label>
+        <input type="checkbox" id="chkActivo" checked>
+        <br><br>
+
+        <!-- Botones: Listar, Agregar, Modificar, Eliminar -->
+        <button id="btnListar">Listar</button>
+        <button id="btnAgregar">Agregar</button>
+        <button id="btnModificar">Modificar</button>
+        <button id="btnEliminar">Eliminar/Inactivar</button>
+    </div>
+
+    <hr>
+
+    <!-- Tabla para visualizar registros -->
+    <div id="listado">
+        <table border="1" id="tablaPacientes">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Completo</th>
+                    <th>DNI</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTabla">
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
