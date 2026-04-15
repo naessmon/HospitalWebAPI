@@ -1,6 +1,9 @@
 // Definición de la URL base de la API
 const urlApi = "http://localhost:5010/api/pacientes";
 
+let pacienteActivoSeleccionado = true;
+let pacienteFechaCreacionSeleccionada = null;
+
 // Usamos window.onload para asegurar que el HTML cargó completamente antes de buscar los botones
 window.onload = function () {
     console.log("Página cargada. Inicializando eventos...");
@@ -92,6 +95,10 @@ function modificar() {
     if (!data) return; // Si hay error de validación
 
     data.id = parseInt(id);
+    data.activo = pacienteActivoSeleccionado;
+    if (pacienteFechaCreacionSeleccionada) {
+        data.fechaCreacion = pacienteFechaCreacionSeleccionada;
+    }
 
     fetch(`${urlApi}/${id}`, {
         method: 'PUT',
@@ -149,6 +156,8 @@ function seleccionar(p) {
     document.getElementById("txtApellido").value = p.apellido;
     document.getElementById("txtDNI").value = p.dni;
     document.getElementById("txtTelefono").value = p.telefono;
+    pacienteActivoSeleccionado = p.activo;
+    pacienteFechaCreacionSeleccionada = p.fechaCreacion || null;
     if (p.fechaNacimiento) document.getElementById("txtFechaNacimiento").value = p.fechaNacimiento.split('T')[0];
 }
 

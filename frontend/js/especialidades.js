@@ -1,5 +1,8 @@
 const urlApi = "http://localhost:5010/api/especialidades";
 
+let especialidadActivoSeleccionada = true;
+let especialidadFechaCreacionSeleccionada = null;
+
 window.onload = function () {
     const btnListar = document.getElementById("btnListar");
     const btnAgregar = document.getElementById("btnAgregar");
@@ -68,6 +71,10 @@ function modificar() {
 
     const data = recolectarDatos();
     data.id = parseInt(id);
+    data.activo = especialidadActivoSeleccionada;
+    if (especialidadFechaCreacionSeleccionada) {
+        data.fechaCreacion = especialidadFechaCreacionSeleccionada;
+    }
 
     fetch(`${urlApi}/${id}`, {
         method: 'PUT',
@@ -126,6 +133,8 @@ function seleccionar(e) {
     document.getElementById("txtId").value = e.id;
     document.getElementById("txtNombre").value = e.nombre;
     document.getElementById("txtDescripcion").value = e.descripcion;
+    especialidadActivoSeleccionada = e.activo;
+    especialidadFechaCreacionSeleccionada = e.fechaCreacion || null;
 }
 
 function limpiar() {

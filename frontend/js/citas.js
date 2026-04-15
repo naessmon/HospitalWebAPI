@@ -2,8 +2,12 @@
 const urlApi = "http://localhost:5010/api/citas";
 const urlPacientes = "http://localhost:5010/api/pacientes";
 const urlMedicos = "http://localhost:5010/api/medicos";
+const urlEspecialidades = "http://localhost:5010/api/especialidades";
 let pacientesCache = {};
 let medicosCache = {};
+let especialidadesCache = {};
+let citaActivoSeleccionada = true;
+let citaFechaCreacionSeleccionada = null;
 
 window.onload = function () {
     const btnListar = document.getElementById("btnListar");
@@ -80,6 +84,10 @@ function modificar() {
 
     const data = recolectarDatos();
     data.Id = parseInt(id);
+    data.Activo = citaActivoSeleccionada;
+    if (citaFechaCreacionSeleccionada) {
+        data.FechaCreacion = citaFechaCreacionSeleccionada;
+    }
 
     fetch(`${urlApi}/${id}`, {
         method: 'PUT',
@@ -146,6 +154,8 @@ function seleccionar(cita) {
     }
     document.getElementById("motivo").value = cita.motivo || "";
     document.getElementById("estado").value = cita.estado || "";
+    citaActivoSeleccionada = cita.activo;
+    citaFechaCreacionSeleccionada = cita.fechaCreacion || null;
 }
 
 function limpiar() {
@@ -158,7 +168,8 @@ function limpiar() {
 }
 
 function cargarCombos() {
-    return Promise.all([listarPacientes(), listarMedicos()]);
+    return Promise.all([listarPacientes(), listarEspecialidades()])
+        .then(() => listarMedicos());
 }
 
 function listarPacientes() {
@@ -171,6 +182,7 @@ function listarPacientes() {
             pacientesCache = {};
             data.forEach(p => {
                 pacientesCache[p.id] = `${p.nombre} ${p.apellido}`;
+                if (!p.activo) return;
                 const option = document.createElement("option");
                 option.value = p.id;
                 option.textContent = `${p.id} - ${p.nombre} ${p.apellido}`;
@@ -189,10 +201,23 @@ function listarMedicos() {
             medicosCache = {};
             data.forEach(m => {
                 medicosCache[m.id] = `${m.nombre} ${m.apellido}`;
+                if (!m.activo) return;
+                const nombreEspecialidad = especialidadesCache[m.especialidadId] || `Especialidad ${m.especialidadId}`;
                 const option = document.createElement("option");
                 option.value = m.id;
-                option.textContent = `${m.id} - ${m.nombre} ${m.apellido}`;
+                option.textContent = `${m.id} - ${m.nombre} ${m.apellido} (${nombreEspecialidad})`;
                 select.appendChild(option);
+            });
+        });
+}
+
+function listarEspecialidades() {
+    return fetch(urlEspecialidades)
+        .then(res => res.json())
+        .then(data => {
+            especialidadesCache = {};
+            data.forEach(e => {
+                especialidadesCache[e.id] = e.nombre;
             });
         });
 }

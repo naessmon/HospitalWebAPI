@@ -1,4 +1,8 @@
 const urlAPI = "http://localhost:5010/api/Medicos";
+const urlEspecialidades = "http://localhost:5010/api/especialidades";
+let medicoActivoSeleccionado = true;
+let medicoFechaCreacionSeleccionada = null;
+let especialidadesCache = {};
 
 document.addEventListener("DOMContentLoaded", () => {
     const btnListar = document.getElementById("btnListar");
@@ -17,12 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     let fecha = medico.fechaCreacion ? medico.fechaCreacion.split('T')[0] : "N/A";
                     let estadoTexto = medico.activo ? "Activo" : "Inactivo";
 
+                    const nombreEspecialidad = especialidadesCache[medico.especialidadId] || `ID ${medico.especialidadId}`;
                     cuerpo.innerHTML += `
                         <tr>
                             <td>${medico.id}</td>
                             <td>${medico.nombre}</td>
                             <td>${medico.apellido}</td>
-                            <td>${medico.especialidadId}</td>
+                            <td>${nombreEspecialidad}</td>
                             <td>${medico.telefono}</td>
                             <td>${fecha}</td>
                             <td>${estadoTexto}</td>
@@ -38,8 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // AGREGAR 
     document.getElementById("btnAgregar").onclick = function() {
-        const estadoInput = document.getElementById("chkActivo").checked;
-        
         const nuevo = {
             nombre: document.getElementById("txtNombre").value,
             apellido: document.getElementById("txtApellido").value,
@@ -64,8 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
             nombre: document.getElementById("txtNombre").value,
             apellido: document.getElementById("txtApellido").value,
             especialidadId: parseInt(document.getElementById("txtEspecialidad").value),
-            telefono: document.getElementById("txtTelefono").value
+            telefono: document.getElementById("txtTelefono").value,
+            activo: medicoActivoSeleccionado
         };
+        if (medicoFechaCreacionSeleccionada) {
+            editado.fechaCreacion = medicoFechaCreacionSeleccionada;
+        }
 
         fetch(`${urlAPI}/${id}`, {
             method: 'PUT',
@@ -92,6 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
         }
     };
+
+    cargarEspecialidades().catch(err => console.error("Error cargando especialidades:", err));
 });
 
 function cargarDatos(id, nombre, apellido, especialidad, telefono, fecha, activo) {
@@ -100,6 +109,8 @@ function cargarDatos(id, nombre, apellido, especialidad, telefono, fecha, activo
     document.getElementById("txtApellido").value = apellido;
     document.getElementById("txtEspecialidad").value = especialidad;
     document.getElementById("txtTelefono").value = telefono;
+    medicoActivoSeleccionado = activo === 1;
+    medicoFechaCreacionSeleccionada = fecha || null;
 }
 
 function limpiarFormulario() {
@@ -108,5 +119,24 @@ function limpiarFormulario() {
     document.getElementById("txtApellido").value = "";
     document.getElementById("txtEspecialidad").value = "";
     document.getElementById("txtTelefono").value = "";
-    document.getElementById("chkActivo").checked = true;
+    medicoActivoSeleccionado = true;
+    medicoFechaCreacionSeleccionada = null;
+}
+
+function cargarEspecialidades() {
+    return fetch(urlEspecialidades)
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById("txtEspecialidad");
+            if (!select) return;
+            especialidadesCache = {};
+            select.innerHTML = '<option value="">-- Seleccione especialidad --</option>';
+            data.forEach(e => {
+                especialidadesCache[e.id] = e.nombre;
+                const opt = document.createElement("option");
+                opt.value = e.id;
+                opt.textContent = `${e.id} - ${e.nombre}`;
+                select.appendChild(opt);
+            });
+        });
 }

@@ -27,7 +27,10 @@
             <input type="hidden" id="txtId">
             <input type="text" id="txtNombre" placeholder="Nombre">
             <input type="text" id="txtApellido" placeholder="Apellido">
-            <input type="number" id="txtEspecialidad" placeholder="ID Especialidad (1, 2, 3)">
+            <label for="txtEspecialidad">Especialidad:</label>
+            <select id="txtEspecialidad">
+                <option value="">-- Seleccione especialidad --</option>
+            </select>
             <input type="text" id="txtTelefono" placeholder="Teléfono">
         </div>
 
@@ -65,9 +68,5 @@
 </div>
 
 <script src="js/medicos.js"></script>
-<script>
-    document.getElementById('txtFecha').valueAsDate = new Date();
-    document.getElementById('txtActivo').value = 1;
-</script>
 </body>
 </html>
