@@ -1,1 +1,53 @@
-<!-- archivo -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Médicos - Hospital</title>
+
+</head>
+<body>
+
+<div class="container">
+    <h2>Sistema de Médicos</h2>
+    
+    <div class="form-group">
+        <input type="hidden" id="txtId">
+        <input type="text" id="txtNombre" placeholder="Nombre">
+        <input type="text" id="txtApellido" placeholder="Apellido">
+        <input type="number" id="txtEspecialidad" placeholder="ID Especialidad (1, 2, 3)">
+        <input type="text" id="txtTelefono" placeholder="Teléfono">
+        <input type="date" id="txtFecha">
+        <input type="number" id="txtActivo" placeholder="Activo (1) o Inactivo (0)" min="0" max="1">
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <button id="btnListar">Listar</button>
+        <button id="btnAgregar">Agregar</button>
+        <button id="btnModificar">Actualizar</button>
+        <button id="btnEliminar">Eliminar</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Especialidad</th>
+                <th>Teléfono</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla"></tbody>
+    </table>
+</div>
+
+<script src="js/medicos.js"></script>
+<script>
+    document.getElementById('txtFecha').valueAsDate = new Date();
+    document.getElementById('txtActivo').value = 1;
+</script>
+</body>
+</html>
