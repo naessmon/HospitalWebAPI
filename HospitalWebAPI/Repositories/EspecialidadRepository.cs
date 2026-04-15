@@ -32,8 +32,16 @@ namespace HospitalWebAPI.Repositories
 
         public void Update(Especialidad especialidad)
         {
-            _context.Especialidades.Update(especialidad);
-            _context.SaveChanges();
+            var existingEspecialidad = _context.Especialidades.Find(especialidad.Id);
+
+            if (existingEspecialidad != null)
+            {
+                existingEspecialidad.Nombre = especialidad.Nombre;
+                existingEspecialidad.Descripcion = especialidad.Descripcion;
+                existingEspecialidad.Activo = especialidad.Activo;
+
+                _context.SaveChanges();
+            }
         }
 
         public void Delete(int id)

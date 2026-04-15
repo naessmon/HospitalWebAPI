@@ -20,7 +20,22 @@ namespace HospitalWebAPI.Repositories
         public void Add(Cita cita)
         { _context.Citas.Add(cita); _context.SaveChanges(); }
 
-        public void Update(Cita cita) { _context.Citas.Update(cita); _context.SaveChanges(); }
+        public void Update(Cita cita)
+        {
+            var existingCita = _context.Citas.Find(cita.Id);
+
+            if (existingCita != null)
+            {
+                existingCita.PacienteId = cita.PacienteId;
+                existingCita.MedicoId = cita.MedicoId;
+                existingCita.FechaHora = cita.FechaHora;
+                existingCita.Motivo = cita.Motivo;
+                existingCita.Estado = cita.Estado;
+                existingCita.Activo = cita.Activo;
+
+                _context.SaveChanges();
+            }
+        }
         public void Delete(int id) 
         { var cita = _context.Citas.Find(id); if (cita != null) 
             { cita.Activo = false; _context.SaveChanges(); } }
