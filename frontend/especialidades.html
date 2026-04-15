@@ -1,1 +1,50 @@
-<!-- archivo -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mantenimiento de Especialidades</title>
+    <link rel="stylesheet" href="css/estilos.css"> </head>
+<body>
+    <h2>Gestión de Especialidades Médicas</h2>
+
+    <div id="formulario">
+        <input type="hidden" id="txtId">
+        
+        <label>Nombre:</label>
+        <input type="text" id="txtNombre" placeholder="Ej: Cardiología"><br><br>
+
+        <label>Descripción:</label>
+        <textarea id="txtDescripcion" placeholder="Breve descripción..."></textarea><br><br>
+
+        <label>Fecha de Creación:</label>
+        <input type="date" id="txtFechaCreacion"><br><br>
+
+        <label>Estado:</label>
+        <input type="checkbox" id="chkActivo" checked> Activo <br><br>
+
+        <button id="btnListar">Listar</button>
+        <button id="btnAgregar">Agregar</button>
+        <button id="btnModificar">Modificar</button>
+        <button id="btnEliminar">Eliminar</button>
+        <button onclick="limpiar()">Limpiar</button>
+    </div>
+
+    <hr>
+
+    <table border="1" style="width: 100%; text-align: left;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+            </tbody>
+    </table>
+
+    <script src="js/especialidades.js"></script>
+</body>
+</html>
