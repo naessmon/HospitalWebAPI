@@ -1,4 +1,24 @@
-<!-- archivo -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citas Médicas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav>
+        <h1>Hospital UNAH</h1>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="pacientes.html">Pacientes</a></li>
+            <li><a href="medicos.html">Médicos</a></li>
+            <li><a href="citas.html">Citas</a></li>
+            <li><a href="especialidades.html">Especialidades</a></li>
+        </ul>
+    </nav>
+
 <div class="container">
 
     <h1>Citas Médicas</h1>
@@ -6,13 +26,35 @@
     <!-- Formulario -->
     <div class="card">
         <h2>Crear Cita</h2>
+        <input type="hidden" id="txtId">
 
-        <input type="text" id="paciente" placeholder="Nombre del paciente">
-        <input type="text" id="doctor" placeholder="Nombre del doctor">
-        <input type="date" id="fecha">
-        <input type="time" id="hora">
+        <label for="pacienteId">Paciente:</label>
+        <select id="pacienteId">
+            <option value="">-- Seleccione paciente --</option>
+        </select>
 
-        <button onclick="crearCita()">Guardar Cita</button>
+        <label for="medicoId">Médico:</label>
+        <select id="medicoId">
+            <option value="">-- Seleccione médico --</option>
+        </select>
+
+        <label for="fechaHora">Fecha de la Cita a Agendar:</label>
+        <input type="datetime-local" id="fechaHora">
+        <input type="text" id="motivo" placeholder="Motivo">
+        <label for="estado">Estado:</label>
+        <select id="estado">
+            <option value="Confirmada">Confirmada</option>
+            <option value="Sin Confirmar">Sin Confirmar</option>
+            <option value="No Atendió">No Atendió</option>
+        </select>
+
+        <div class="button-group">
+            <button id="btnListar">Listar</button>
+            <button id="btnAgregar" class="btn-guardar">Agregar</button>
+            <button id="btnModificar" class="btn-modificar">Modificar</button>
+            <button id="btnEliminar" class="btn-eliminar">Eliminar</button>
+            <button onclick="limpiar()" class="btn-limpiar">Limpiar</button>
+        </div>
     </div>
 
     <!-- Lista -->
@@ -22,14 +64,27 @@
         <table>
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Paciente</th>
-                    <th>Doctor</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
+                    <th>Médico</th>
+                    <th>Fecha y Hora</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                    <th>Fecha Creación</th>
+                    <th>Activo</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody id="tablaCitas"></tbody>
         </table>
     </div>
 
+    <footer>
+        <p>Proyecto del Grupo 6 de Programación Orientada a Objetos</p>
+        <p>IPAC 2026</p>
+    </footer>
 </div>
+
+<script src="js/citas.js"></script>
+</body>
+</html>

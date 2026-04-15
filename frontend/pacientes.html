@@ -1,71 +1,83 @@
-<script src="js/pacientes.js"></script>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mantenimiento de Pacientes</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- NAVBAR -->
+    <nav>
+        <h1>Hospital UNAH</h1>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="pacientes.html">Pacientes</a></li>
+            <li><a href="medicos.html">Médicos</a></li>
+            <li><a href="citas.html">Citas</a></li>
+            <li><a href="especialidades.html">Especialidades</a></li>
+        </ul>
+    </nav>
 
+<div class="container">
     <h1>Gestión de Pacientes</h1>
 
-    <!-- Controles para agregar/actualizar registros -->
-    <div id="formulario">
-        <h3>Datos del Paciente</h3>
-        <!-- Campo oculto para el ID al modificar -->
-        <input type="hidden" id="txtId">
-        
-        <label for="txtNombre">Nombre:</label>
-        <input type="text" id="txtNombre">
-        <br><br>
-        
-        <label for="txtApellido">Apellido:</label>
-        <input type="text" id="txtApellido">
-        <br><br>
+    <div class="card">
+        <div id="formulario">
+            <h3>Datos del Paciente</h3>
+            <input type="hidden" id="txtId">
+            
+            <label for="txtNombre">Nombre:</label>
+            <input type="text" id="txtNombre">
+            
+            <label for="txtApellido">Apellido:</label>
+            <input type="text" id="txtApellido">
 
-        <label for="txtDNI">DNI (Identidad):</label>
-        <input type="text" id="txtDNI">
-        <br><br>
+            <label for="txtFechaNacimiento">Fecha de Nacimiento:</label>
+            <input type="date" id="txtFechaNacimiento">
 
-        <label for="txtFechaNacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="txtFechaNacimiento">
-        <br><br>
+            <label for="txtDNI">DNI (Identidad):</label>
+            <input type="text" id="txtDNI">
 
-        <label for="txtTelefono">Teléfono:</label>
-        <input type="text" id="txtTelefono">
-        <br><br>
+            <label for="txtTelefono">Teléfono:</label>
+            <input type="text" id="txtTelefono">
 
-        <label for="chkActivo">Activo:</label>
-        <input type="checkbox" id="chkActivo" checked>
-        <br><br>
-
-        <!-- Botones: Listar, Agregar, Modificar, Eliminar -->
-        <button id="btnListar">Listar</button>
-        <button id="btnAgregar">Agregar</button>
-        <button id="btnModificar">Modificar</button>
-        <button id="btnEliminar">Eliminar/Inactivar</button>
+            <div class="button-group">
+                <button id="btnListar">Listar</button>
+                <button id="btnAgregar" class="btn-guardar">Agregar</button>
+                <button id="btnModificar" class="btn-modificar">Modificar</button>
+                <button id="btnEliminar" class="btn-eliminar">Eliminar</button>
+                <button onclick="limpiar()" class="btn-limpiar">Limpiar</button>
+            </div>
+        </div>
     </div>
 
-    <hr>
-
-    <!-- Tabla para visualizar registros -->
-    <div id="listado">
-        <table border="1" id="tablaPacientes">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre Completo</th>
-                    <th>DNI</th>
-                    <th>Teléfono</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="cuerpoTabla">
-            </tbody>
-        </table>
+    <div class="card">
+        <div id="listado">
+            <table border="1" id="tablaPacientes">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre Completo</th>
+                        <th>Fecha Nacimiento</th>
+                        <th>DNI</th>
+                        <th>Teléfono</th>
+                        <th>Fecha Creación</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla"></tbody>
+            </table>
+        </div>
     </div>
+
+    <footer>
+        <p>Proyecto del Grupo 6 de Programación Orientada a Objetos</p>
+        <p>IPAC 2026</p>
+    </footer>
+</div>
+
+<script src="js/pacientes.js"></script>
 </body>
 </html>

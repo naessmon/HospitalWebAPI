@@ -26,6 +26,7 @@ function listar() {
                     <td>${e.id}</td>
                     <td>${e.nombre}</td>
                     <td>${e.descripcion}</td>
+                    <td>${e.fechaCreacion ? new Date(e.fechaCreacion).toLocaleDateString() : ''}</td>
                     <td>${e.activo ? "Activo" : "Inactivo"}</td>
                     <td><button onclick='seleccionar(${JSON.stringify(e)})'>Seleccionar</button></td>
                 `;
@@ -117,9 +118,7 @@ function eliminar() {
 function recolectarDatos() {
     return {
         nombre: document.getElementById("txtNombre").value.trim(),
-        descripcion: document.getElementById("txtDescripcion").value.trim(),
-        fechaCreacion: document.getElementById("txtFechaCreacion").value || new Date().toISOString(),
-        activo: document.getElementById("chkActivo").checked
+        descripcion: document.getElementById("txtDescripcion").value.trim()
     };
 }
 
@@ -127,16 +126,10 @@ function seleccionar(e) {
     document.getElementById("txtId").value = e.id;
     document.getElementById("txtNombre").value = e.nombre;
     document.getElementById("txtDescripcion").value = e.descripcion;
-    document.getElementById("chkActivo").checked = e.activo;
-    if (e.fechaCreacion) {
-        document.getElementById("txtFechaCreacion").value = e.fechaCreacion.split('T')[0];
-    }
 }
 
 function limpiar() {
     document.getElementById("txtId").value = "";
     document.getElementById("txtNombre").value = "";
     document.getElementById("txtDescripcion").value = "";
-    document.getElementById("txtFechaCreacion").value = "";
-    document.getElementById("chkActivo").checked = true;
 }

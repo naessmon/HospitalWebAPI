@@ -1,12 +1,12 @@
 // Definición de la URL base de la API
-const urlApi = "https://localhost:7122/api/pacientes";
+const urlApi = "http://localhost:5010/api/pacientes";
 
 // Usamos window.onload para asegurar que el HTML cargó completamente antes de buscar los botones
 window.onload = function () {
     console.log("Página cargada. Inicializando eventos...");
 
     // 0. PRUEBA DE CONEXIÓN INICIAL
-    fetch("https://localhost:7122/api/pacientes")
+    fetch("https://localhost:5010/api/pacientes")
         .then(res => res.json())
         .then(data => console.log("Conexión inicial exitosa. Datos:", data))
         .catch(err => console.error("Error de conexión (Posible CORS o API apagada):", err));
@@ -38,9 +38,11 @@ function listar() {
                 const fila = document.createElement("tr");
                 fila.innerHTML = `
                     <td>${p.id}</td>
-                    <td>${p.nombre}</td>
-                    <td>${p.apellido}</td>
+                    <td>${p.nombre} ${p.apellido}</td>
+                    <td>${p.fechaNacimiento ? new Date(p.fechaNacimiento).toLocaleDateString() : ''}</td>
                     <td>${p.dni}</td>
+                    <td>${p.telefono}</td>
+                    <td>${p.fechaCreacion ? new Date(p.fechaCreacion).toLocaleDateString() : ''}</td>
                     <td>${p.activo ? "Activo" : "Inactivo"}</td>
                     <td><button onclick='seleccionar(${JSON.stringify(p)})'>Seleccionar</button></td>
                 `;
@@ -135,10 +137,9 @@ function recolectarDatos() {
     return {
         nombre: document.getElementById("txtNombre").value.trim(),
         apellido: document.getElementById("txtApellido").value.trim(),
-        dni: dni,
         fechaNacimiento: document.getElementById("txtFechaNacimiento").value || new Date().toISOString().split('T')[0],
-        telefono: telefono,
-        activo: document.getElementById("chkActivo").checked
+        dni: dni,
+        telefono: telefono
     };
 }
 
@@ -148,12 +149,10 @@ function seleccionar(p) {
     document.getElementById("txtApellido").value = p.apellido;
     document.getElementById("txtDNI").value = p.dni;
     document.getElementById("txtTelefono").value = p.telefono;
-    document.getElementById("chkActivo").checked = p.activo;
     if (p.fechaNacimiento) document.getElementById("txtFechaNacimiento").value = p.fechaNacimiento.split('T')[0];
 }
 
 function limpiar() {
     const campos = ["txtId", "txtNombre", "txtApellido", "txtDNI", "txtFechaNacimiento", "txtTelefono"];
     campos.forEach(c => document.getElementById(c).value = "");
-    document.getElementById("chkActivo").checked = true;
 }

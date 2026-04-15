@@ -10,6 +10,7 @@ body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     background-color: #f5f7fa;
     color: #333;
+    text-align: center;
 }
 
 /* Contenedor principal */
@@ -40,6 +41,39 @@ button:hover {
     background-color: #1e4fd1;
 }
 
+/* Estilos específicos para botones */
+button.btn-guardar {
+    background-color: #047050;
+}
+
+button.btn-guardar:hover {
+    background-color: #035a3e;
+}
+
+button.btn-modificar {
+    background-color: #705004;
+}
+
+button.btn-modificar:hover {
+    background-color: #563d03;
+}
+
+button.btn-eliminar {
+    background-color: #70041a;
+}
+
+button.btn-eliminar:hover {
+    background-color: #560314;
+}
+
+button.btn-limpiar {
+    background-color: #6b7280;
+}
+
+button.btn-limpiar:hover {
+    background-color: #4b5563;
+}
+
 /* Inputs */
 input, select {
     width: 100%;
@@ -59,6 +93,58 @@ input, select {
     margin-bottom: 20px;
 }
 
+.card-hero {
+    background-color: #fdfdfd;
+    background: linear-gradient(135deg, #c6c6c655 25%, transparent 25%) -17px 0/ 34px 34px, linear-gradient(225deg, #c6c6c6 25%, transparent 25%) -17px 0/ 34px 34px, linear-gradient(315deg, #c6c6c655 25%, transparent 25%) 0px 0/ 34px 34px, linear-gradient(45deg, #c6c6c6 25%, #7eb0d1 25%) 0px 0/ 34px 34px;
+    position: relative;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.card-hero .card-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    text-align: center;
+}
+
+.card-hero h2 {
+    color: white;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.card-hero p {
+    color: white;
+    font-size: 1.2em;
+}
+
+.menu {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.menu button {
+    padding: 15px 30px;
+    font-size: 1.1em;
+}
+
 /* Tabla */
 table {
     width: 100%;
@@ -69,25 +155,112 @@ table {
 table th, table td {
     padding: 12px;
     border-bottom: 1px solid #eee;
-    text-align: left;
+    text-align: center;
 }
 
 table th {
     background-color: #f1f5f9;
 }
 
-/* Navbar simple */
-.navbar {
-    background-color: white;
-    padding: 15px 30px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+.button-group {
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px;
 }
 
-.navbar a {
+.button-group button {
+    flex: 1;
+    min-width: 120px;
+}
+
+footer {
+    margin-top: 50px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    text-align: center;
+    color: #666;
+}
+
+/* Navbar */
+nav {
+    background-color: #1e4fd1;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+nav h1 {
+    color: white;
+    margin: 0;
+    font-size: 1.5em;
+    flex-shrink: 0;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+nav a {
     text-decoration: none;
-    color: #333;
-    margin-left: 15px;
+    color: white;
     font-weight: 500;
+    transition: 0.2s;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    nav {
+        padding: 10px 15px;
+        gap: 15px;
+    }
+
+    nav h1 {
+        font-size: 1.2em;
+    }
+
+    nav ul {
+        gap: 15px;
+        width: 100%;
+    }
+
+    nav a {
+        font-size: 0.9em;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    nav {
+        padding: 10px;
+    }
+
+    nav h1 {
+        font-size: 1em;
+    }
+
+    nav ul {
+        gap: 10px;
+        justify-content: center;
+    }
+
+    nav a {
+        font-size: 0.8em;
+        padding: 5px 8px;
+    }
 }

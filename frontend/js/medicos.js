@@ -1,4 +1,4 @@
-var urlAPI = "http://localhost:5122/api/Medicos";
+const urlAPI = "http://localhost:5010/api/Medicos";
 
 document.addEventListener("DOMContentLoaded", () => {
     const btnListar = document.getElementById("btnListar");
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 activos.forEach(medico => {
                     let fecha = medico.fechaCreacion ? medico.fechaCreacion.split('T')[0] : "N/A";
-                    let estadoNum = medico.activo ? 1 : 0;
+                    let estadoTexto = medico.activo ? "Activo" : "Inactivo";
 
                     cuerpo.innerHTML += `
                         <tr>
@@ -25,9 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td>${medico.especialidadId}</td>
                             <td>${medico.telefono}</td>
                             <td>${fecha}</td>
-                            <td>${estadoNum}</td>
+                            <td>${estadoTexto}</td>
                             <td>
-                                <button style="color:black" onclick="cargarDatos(${medico.id}, '${medico.nombre}', '${medico.apellido}', ${medico.especialidadId}, '${medico.telefono}', '${fecha}', ${estadoNum})">
+                                <button style="color:black" onclick="cargarDatos(${medico.id}, '${medico.nombre}', '${medico.apellido}', ${medico.especialidadId}, '${medico.telefono}', '${fecha}', ${medico.activo ? 1 : 0})">
                                     Seleccionar
                                 </button>
                             </td>
@@ -38,15 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // AGREGAR 
     document.getElementById("btnAgregar").onclick = function() {
-        const estadoInput = document.getElementById("txtActivo").value;
+        const estadoInput = document.getElementById("chkActivo").checked;
         
         const nuevo = {
             nombre: document.getElementById("txtNombre").value,
             apellido: document.getElementById("txtApellido").value,
             especialidadId: parseInt(document.getElementById("txtEspecialidad").value),
-            telefono: document.getElementById("txtTelefono").value,
-            fechaCreacion: new Date(document.getElementById("txtFecha").value).toISOString(),
-            activo: estadoInput == "1" // Si pones 1 es true, si pones 0 es false
+            telefono: document.getElementById("txtTelefono").value
         };
 
         fetch(urlAPI, {
@@ -66,9 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
             nombre: document.getElementById("txtNombre").value,
             apellido: document.getElementById("txtApellido").value,
             especialidadId: parseInt(document.getElementById("txtEspecialidad").value),
-            telefono: document.getElementById("txtTelefono").value,
-            fechaCreacion: new Date(document.getElementById("txtFecha").value).toISOString(),
-            activo: document.getElementById("txtActivo").value == "1"
+            telefono: document.getElementById("txtTelefono").value
         };
 
         fetch(`${urlAPI}/${id}`, {
@@ -104,8 +100,6 @@ function cargarDatos(id, nombre, apellido, especialidad, telefono, fecha, activo
     document.getElementById("txtApellido").value = apellido;
     document.getElementById("txtEspecialidad").value = especialidad;
     document.getElementById("txtTelefono").value = telefono;
-    document.getElementById("txtFecha").value = fecha;
-    document.getElementById("txtActivo").value = activo;
 }
 
 function limpiarFormulario() {
@@ -114,6 +108,5 @@ function limpiarFormulario() {
     document.getElementById("txtApellido").value = "";
     document.getElementById("txtEspecialidad").value = "";
     document.getElementById("txtTelefono").value = "";
-    document.getElementById("txtFecha").valueAsDate = new Date();
-    document.getElementById("txtActivo").value = 1;
+    document.getElementById("chkActivo").checked = true;
 }
