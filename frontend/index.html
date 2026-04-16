@@ -1,1 +1,48 @@
-<!-- archivo -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hospital UNAH</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <h1>Hospital UNAH</h1>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="pacientes.html">Pacientes</a></li>
+            <li><a href="medicos.html">Médicos</a></li>
+            <li><a href="citas.html">Citas</a></li>
+            <li><a href="especialidades.html">Especialidades</a></li>
+        </ul>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <div class="card card-hero">
+            <div class="card-content">
+                <h2>Bienvenido al Sistema de Gestión Hospitalaria</h2>
+                <p>Seleccione una opción:</p>
+
+                <div class="menu">
+                    <button onclick="location.href='pacientes.html'">Pacientes</button>
+                    <button onclick="location.href='medicos.html'">Médicos</button>
+                    <button onclick="location.href='citas.html'">Citas</button>
+                    <button onclick="location.href='especialidades.html'">Especialidades</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Proyecto del Grupo 6 de Programación Orientada a Objetos</p>
+        <p>IPAC 2026</p>
+    </footer>
+
+</body>
+</html>

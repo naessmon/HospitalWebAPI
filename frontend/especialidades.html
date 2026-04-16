@@ -1,1 +1,70 @@
-<!-- archivo -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantenimiento de Especialidades</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav>
+        <h1>Hospital UNAH</h1>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="pacientes.html">Pacientes</a></li>
+            <li><a href="medicos.html">Médicos</a></li>
+            <li><a href="citas.html">Citas</a></li>
+            <li><a href="especialidades.html">Especialidades</a></li>
+        </ul>
+    </nav>
+
+<div class="container">
+    <h1>Gestión de Especialidades Médicas</h1>
+
+    <div class="card">
+        <div id="formulario">
+            <input type="hidden" id="txtId">
+            
+            <label>Nombre:</label>
+            <input type="text" id="txtNombre" placeholder="Ej: Cardiología">
+
+            <label>Descripción:</label>
+            <textarea id="txtDescripcion" placeholder="Breve descripción..."></textarea>
+
+            <div class="button-group">
+                <button id="btnListar">Listar</button>
+                <button id="btnAgregar" class="btn-guardar">Agregar</button>
+                <button id="btnModificar" class="btn-modificar">Modificar</button>
+                <button id="btnEliminar" class="btn-eliminar">Eliminar</button>
+                <button onclick="limpiar()" class="btn-limpiar">Limpiar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Fecha Creación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTabla"></tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>Proyecto del Grupo 6 de Programación Orientada a Objetos</p>
+        <p>IPAC 2026</p>
+    </footer>
+</div>
+
+<script src="js/alert.js"></script>
+<script src="js/especialidades.js"></script>
+</body>
+</html>

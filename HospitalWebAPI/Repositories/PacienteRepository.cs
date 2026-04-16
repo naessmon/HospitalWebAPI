@@ -29,8 +29,17 @@ namespace HospitalWebAPI.Repositories
         }
         public void Update(Paciente paciente)
         {
-            _context.Pacientes.Update(paciente);
-            _context.SaveChanges();
+            var existingPaciente = _context.Pacientes.Find(paciente.Id);
+            if (existingPaciente != null)
+            {
+                existingPaciente.Nombre = paciente.Nombre;
+                existingPaciente.Apellido = paciente.Apellido;
+                existingPaciente.FechaNacimiento = paciente.FechaNacimiento;
+                existingPaciente.DNI = paciente.DNI;
+                existingPaciente.Telefono = paciente.Telefono;
+                existingPaciente.Activo = paciente.Activo;
+                _context.SaveChanges();
+            }
         }
         public void Delete(int id)
         {

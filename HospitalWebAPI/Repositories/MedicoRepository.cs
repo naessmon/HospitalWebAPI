@@ -33,8 +33,18 @@ namespace HospitalWebAPI.Repositories
 
         public void Update(Medico medico)
         {
-            _context.Medicos.Update(medico);
-            _context.SaveChanges();
+            var existingMedico = _context.Medicos.Find(medico.Id);
+
+            if (existingMedico != null)
+            {
+                existingMedico.Nombre = medico.Nombre;
+                existingMedico.Apellido = medico.Apellido;
+                existingMedico.EspecialidadId = medico.EspecialidadId;
+                existingMedico.Telefono = medico.Telefono;
+                existingMedico.Activo = medico.Activo;
+
+                _context.SaveChanges();
+            }
         }
 
         public void Delete(int id)

@@ -1,1 +1,73 @@
-<!-- archivo -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Médicos - Hospital</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav>
+        <h1>Hospital UNAH</h1>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="pacientes.html">Pacientes</a></li>
+            <li><a href="medicos.html">Médicos</a></li>
+            <li><a href="citas.html">Citas</a></li>
+            <li><a href="especialidades.html">Especialidades</a></li>
+        </ul>
+    </nav>
+
+<div class="container">
+    <h1>Gestión de Médicos</h1>
+    
+    <div class="card">
+        <div class="form-group">
+            <input type="hidden" id="txtId">
+            <input type="text" id="txtNombre" placeholder="Nombre">
+            <input type="text" id="txtApellido" placeholder="Apellido">
+            <label for="txtEspecialidad">Especialidad:</label>
+            <select id="txtEspecialidad">
+                <option value="">-- Seleccione especialidad --</option>
+            </select>
+            <input type="text" id="txtTelefono" placeholder="Teléfono">
+        </div>
+
+        <div class="button-group">
+            <button id="btnListar">Listar</button>
+            <button id="btnAgregar" class="btn-guardar">Agregar</button>
+            <button id="btnModificar" class="btn-modificar">Modificar</button>
+            <button id="btnEliminar" class="btn-eliminar">Eliminar</button>
+            <button onclick="limpiarFormulario()" class="btn-limpiar">Limpiar</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Especialidad</th>
+                    <th>Teléfono</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTabla"></tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>Proyecto del Grupo 6 de Programación Orientada a Objetos</p>
+        <p>IPAC 2026</p>
+    </footer>
+</div>
+
+<script src="js/alert.js"></script>
+<script src="js/medicos.js"></script>
+</body>
+</html>
