@@ -37,8 +37,8 @@ function listar() {
 
                 fila.innerHTML = `
                     <td>${cita.id}</td>
-                    <td>${cita.pacienteId} - ${nombrePaciente}</td>
-                    <td>${cita.medicoId} - ${nombreMedico}</td>
+                    <td>${nombrePaciente}</td>
+                    <td>${nombreMedico}</td>
                     <td>${fechaHora}</td>
                     <td>${cita.motivo || ""}</td>
                     <td>${cita.estado || ""}</td>
@@ -54,7 +54,7 @@ function listar() {
 
 function agregar() {
     const data = recolectarDatos();
-    if (!data.PacienteId || !data.MedicoId) return alert("Paciente ID y Médico ID son obligatorios");
+    if (!data.PacienteId || !data.MedicoId) return showAlert("Paciente ID y Médico ID son obligatorios", "info");
 
     fetch(urlApi, {
         method: 'POST',
@@ -68,19 +68,19 @@ function agregar() {
         return res.json();
     })
     .then(data => {
-        alert("Cita guardada");
+        showAlert("Cita guardada", "success");
         listar();
         limpiar();
     })
     .catch(err => {
         console.error("Error al guardar:", err);
-        alert("Error al guardar la cita: " + err.message);
+        showAlert("Error al guardar la cita: " + err.message, "error");
     });
 }
 
 function modificar() {
     const id = document.getElementById("txtId").value;
-    if (!id) return alert("Seleccione una cita primero");
+    if (!id) return showAlert("Seleccione una cita primero", "info");
 
     const data = recolectarDatos();
     data.Id = parseInt(id);
@@ -101,38 +101,41 @@ function modificar() {
         return res.json();
     })
     .then(data => {
-        alert("Cita actualizada");
+        showAlert("Cita actualizada", "success");
         listar();
         limpiar();
     })
     .catch(err => {
         console.error("Error al actualizar:", err);
-        alert("Error al actualizar la cita: " + err.message);
+        showAlert("Error al actualizar la cita: " + err.message, "error");
     });
 }
 
 function eliminar() {
     const id = document.getElementById("txtId").value;
-    if (!id) return alert("Seleccione una cita");
+    if (!id) return showAlert("Seleccione una cita", "info");
 
-    if (confirm("¿Desea eliminar esta cita?")) {
-        fetch(`${urlApi}/${id}`, { method: 'DELETE' })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`Error HTTP: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(data => {
-                alert("Cita eliminada");
-                listar();
-                limpiar();
-            })
-            .catch(err => {
-                console.error("Error al eliminar:", err);
-                alert("Error al eliminar la cita: " + err.message);
-            });
-    }
+    showConfirm("¿Desea eliminar esta cita?")
+        .then(confirmed => {
+            if (confirmed) {
+                fetch(`${urlApi}/${id}`, { method: 'DELETE' })
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error(`Error HTTP: ${res.status}`);
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        showAlert("Cita eliminada", "success");
+                        listar();
+                        limpiar();
+                    })
+                    .catch(err => {
+                        console.error("Error al eliminar:", err);
+                        showAlert("Error al eliminar la cita: " + err.message, "error");
+                    });
+            }
+        });
 }
 
 function recolectarDatos() {
@@ -150,7 +153,7 @@ function seleccionar(cita) {
     document.getElementById("pacienteId").value = cita.pacienteId;
     document.getElementById("medicoId").value = cita.medicoId;
     if (cita.fechaHora) {
-        document.getElementById("fechaHora").value = cita.fechaHora.slice(0, 16); // Para datetime-local
+        document.getElementById("fechaHora").value = cita.fechaHora.slice(0, 16); 
     }
     document.getElementById("motivo").value = cita.motivo || "";
     document.getElementById("estado").value = cita.estado || "";
@@ -185,7 +188,7 @@ function listarPacientes() {
                 if (!p.activo) return;
                 const option = document.createElement("option");
                 option.value = p.id;
-                option.textContent = `${p.id} - ${p.nombre} ${p.apellido}`;
+                option.textContent = `${p.nombre} ${p.apellido}`;
                 select.appendChild(option);
             });
         });
@@ -205,7 +208,7 @@ function listarMedicos() {
                 const nombreEspecialidad = especialidadesCache[m.especialidadId] || `Especialidad ${m.especialidadId}`;
                 const option = document.createElement("option");
                 option.value = m.id;
-                option.textContent = `${m.id} - ${m.nombre} ${m.apellido} (${nombreEspecialidad})`;
+                option.textContent = `${m.nombre} ${m.apellido} (${nombreEspecialidad})`;
                 select.appendChild(option);
             });
         });

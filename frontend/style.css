@@ -150,16 +150,27 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 table th, table td {
     padding: 12px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
     text-align: center;
 }
 
+table th:last-child, table td:last-child {
+    border-right: none;
+}
+
 table th {
-    background-color: #f1f5f9;
+    background-color: #f8fafc;
+    color: #374151;
+    font-weight: 600;
+    border-bottom: 2px solid #e2e8f0;
 }
 
 .button-group {
@@ -263,4 +274,168 @@ nav a:hover {
         font-size: 0.8em;
         padding: 5px 8px;
     }
+}
+
+/* Modal/Alert personalizado */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.3em;
+    color: #222;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+.modal-body {
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: #555;
+    word-wrap: break-word;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-footer button {
+    padding: 10px 20px;
+    min-width: 100px;
+}
+
+/* Estilos según el tipo de alerta */
+.modal-content.success .modal-header h2 {
+    color: #047050;
+}
+
+.modal-content.success .modal-footer button {
+    background-color: #047050;
+}
+
+.modal-content.success .modal-footer button:hover {
+    background-color: #035a3e;
+}
+
+.modal-content.error .modal-header h2 {
+    color: #70041a;
+}
+
+.modal-content.error .modal-footer button {
+    background-color: #70041a;
+}
+
+.modal-content.error .modal-footer button:hover {
+    background-color: #560314;
+}
+
+.modal-content.info .modal-header h2 {
+    color: #1e4fd1;
+}
+
+.modal-content.info .modal-footer button {
+    background-color: #1e4fd1;
+}
+
+.modal-content.info .modal-footer button:hover {
+    background-color: #163aa0;
+}
+
+.modal-content.warning .modal-header h2 {
+    color: #d97706;
+}
+
+.modal-content.warning .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-content.warning .btn-cancel {
+    background-color: #6b7280;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-content.warning .btn-cancel:hover {
+    background-color: #4b5563;
+}
+
+.modal-content.warning .btn-confirm {
+    background-color: #d97706;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-content.warning .btn-confirm:hover {
+    background-color: #b45309;
 }

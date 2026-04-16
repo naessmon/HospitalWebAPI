@@ -15,10 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 let cuerpo = document.getElementById("cuerpoTabla");
                 cuerpo.innerHTML = "";
                 
-                const activos = data.filter(m => m.activo === true);
-
-                activos.forEach(medico => {
-                    let fecha = medico.fechaCreacion ? medico.fechaCreacion.split('T')[0] : "N/A";
+                data.forEach(medico => {
+                    let fecha = medico.fechaCreacion ? formatearFecha(medico.fechaCreacion) : "N/A";
                     let estadoTexto = medico.activo ? "Activo" : "Inactivo";
 
                     const nombreEspecialidad = especialidadesCache[medico.especialidadId] || `ID ${medico.especialidadId}`;
@@ -55,12 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(nuevo)
         })
-        .then(res => res.ok ? (alert("Guardado"), btnListar.click(), limpiarFormulario()) : alert("Error al guardar"));
+        .then(res => res.ok ? (showAlert("Guardado", "success"), btnListar.click(), limpiarFormulario()) : showAlert("Error al guardar", "error"));
     };
 
     document.getElementById("btnModificar").onclick = function() {
         const id = document.getElementById("txtId").value;
-        if (!id) return alert("Selecciona un médico");
+        if (!id) return showAlert("Selecciona un médico", "info");
 
         const editado = {
             id: parseInt(id),
@@ -79,25 +77,28 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(editado)
         })
-        .then(res => res.ok ? (alert("Actualizado"), btnListar.click()) : alert("Error"));
+        .then(res => res.ok ? (showAlert("Actualizado", "success"), btnListar.click()) : showAlert("Error", "error"));
     };
 
     // ELIMINAR 
     document.getElementById("btnEliminar").onclick = function() {
         const id = document.getElementById("txtId").value;
-        if (!id) return alert("Selecciona un registro");
+        if (!id) return showAlert("Selecciona un registro", "info");
 
-        if (confirm("¿Seguro que deseas inactivar este médico?")) {
-            fetch(`${urlAPI}/${id}`, { method: 'DELETE' })
-                .then(res => {
-                    if (res.ok) {
-                        alert("Inactivado correctamente");
-                        btnListar.click(); // Al recargar, desaparecerá por el filtro
-                    } else {
-                        alert("Error al eliminar");
-                    }
-                });
-        }
+        showConfirm("¿Seguro que deseas inactivar este médico?")
+            .then(confirmed => {
+                if (confirmed) {
+                    fetch(`${urlAPI}/${id}`, { method: 'DELETE' })
+                        .then(res => {
+                            if (res.ok) {
+                                showAlert("Inactivado correctamente", "success");
+                                btnListar.click();
+                            } else {
+                                showAlert("Error al eliminar", "error");
+                            }
+                        });
+                }
+            });
     };
 
     cargarEspecialidades().catch(err => console.error("Error cargando especialidades:", err));
@@ -139,4 +140,12 @@ function cargarEspecialidades() {
                 select.appendChild(opt);
             });
         });
+}
+function formatearFecha(fechaISO) {
+    if (!fechaISO) return "";
+    const fecha = new Date(fechaISO);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const año = fecha.getFullYear();
+    return `${dia}/${mes}/${año}`;
 }

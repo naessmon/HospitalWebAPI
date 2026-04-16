@@ -1,10 +1,8 @@
-// Definición de la URL base de la API
 const urlApi = "http://localhost:5010/api/pacientes";
 
 let pacienteActivoSeleccionado = true;
 let pacienteFechaCreacionSeleccionada = null;
 
-// Usamos window.onload para asegurar que el HTML cargó completamente antes de buscar los botones
 window.onload = function () {
     console.log("Página cargada. Inicializando eventos...");
 
@@ -42,26 +40,26 @@ function listar() {
                 fila.innerHTML = `
                     <td>${p.id}</td>
                     <td>${p.nombre} ${p.apellido}</td>
-                    <td>${p.fechaNacimiento ? new Date(p.fechaNacimiento).toLocaleDateString() : ''}</td>
+                    <td>${p.fechaNacimiento ? formatearFecha(p.fechaNacimiento) : ''}</td>
                     <td>${p.dni}</td>
                     <td>${p.telefono}</td>
-                    <td>${p.fechaCreacion ? new Date(p.fechaCreacion).toLocaleDateString() : ''}</td>
+                    <td>${p.fechaCreacion ? formatearFecha(p.fechaCreacion) : ''}</td>
                     <td>${p.activo ? "Activo" : "Inactivo"}</td>
                     <td><button onclick='seleccionar(${JSON.stringify(p)})'>Seleccionar</button></td>
                 `;
                 cuerpo.appendChild(fila);
             });
         })
-        .catch(err => alert("Error al listar: " + err.message));
+        .catch(err => showAlert("Error al listar: " + err.message, "error"));
 }
 
 // 2. FUNCIÓN AGREGAR (POST)
 function agregar() {
     const data = recolectarDatos();
-    if (!data) return; // Si hay error de validación
+    if (!data) return;
 
     if (!data.nombre || !data.apellido || !data.dni) {
-        alert("Campos obligatorios faltantes.");
+        showAlert("Campos obligatorios faltantes.", "info");
         return;
     }
 
@@ -74,25 +72,25 @@ function agregar() {
     })
     .then(async res => {
         if (res.ok) {
-            alert("¡Paciente guardado!");
+            showAlert("¡Paciente guardado!", "success");
             listar();
             limpiar();
         } else {
             const texto = await res.text();
             console.error("Error servidor:", texto);
-            alert("El servidor rechazó los datos (400/500).");
+            showAlert("El servidor rechazó los datos (400/500).", "error");
         }
     })
-    .catch(err => alert("Error de red: " + err.message));
+    .catch(err => showAlert("Error de red: " + err.message, "error"));
 }
 
 // 3. FUNCIÓN MODIFICAR (PUT)
 function modificar() {
     const id = document.getElementById("txtId").value;
-    if (!id) return alert("Seleccione un registro");
+    if (!id) return showAlert("Seleccione un registro", "info");
 
     const data = recolectarDatos();
-    if (!data) return; // Si hay error de validación
+    if (!data) return;
 
     data.id = parseInt(id);
     data.activo = pacienteActivoSeleccionado;
@@ -106,25 +104,28 @@ function modificar() {
         body: JSON.stringify(data)
     })
     .then(res => {
-        if (res.ok) { alert("Actualizado"); listar(); limpiar(); }
-        else alert("Error al actualizar.");
+        if (res.ok) { showAlert("Actualizado", "success"); listar(); limpiar(); }
+        else showAlert("Error al actualizar.", "error");
     })
-    .catch(err => alert("Error de red: " + err.message));
+    .catch(err => showAlert("Error de red: " + err.message, "error"));
 }
 
 // 4. FUNCIÓN ELIMINAR (DELETE)
 function eliminar() {
     const id = document.getElementById("txtId").value;
-    if (!id) return alert("Seleccione un registro");
+    if (!id) return showAlert("Seleccione un registro", "info");
 
-    if (confirm("¿Eliminar registro?")) {
-        fetch(`${urlApi}/${id}`, { method: 'DELETE' })
-            .then(res => {
-                if (res.ok) { alert("Eliminado"); listar(); limpiar(); }
-                else alert("Error al eliminar.");
-            })
-            .catch(err => alert("Error de red: " + err.message));
-    }
+    showConfirm("¿Eliminar registro?")
+        .then(confirmed => {
+            if (confirmed) {
+                fetch(`${urlApi}/${id}`, { method: 'DELETE' })
+                    .then(res => {
+                        if (res.ok) { showAlert("Eliminado", "success"); listar(); limpiar(); }
+                        else showAlert("Error al eliminar.", "error");
+                    })
+                    .catch(err => showAlert("Error de red: " + err.message, "error"));
+            }
+        });
 }
 
 function recolectarDatos() {
@@ -133,11 +134,11 @@ function recolectarDatos() {
 
     // Validar que DNI y teléfono solo contengan números y guiones
     if (dni && !/^[\d\-]+$/.test(dni)) {
-        alert("DNI solo debe contener números y guiones.");
+        showAlert("DNI solo debe contener números y guiones.", "info");
         return null;
     }
     if (telefono && !/^[\d\-]+$/.test(telefono)) {
-        alert("Teléfono solo debe contener números y guiones.");
+        showAlert("Teléfono solo debe contener números y guiones.", "info");
         return null;
     }
 
@@ -164,4 +165,13 @@ function seleccionar(p) {
 function limpiar() {
     const campos = ["txtId", "txtNombre", "txtApellido", "txtDNI", "txtFechaNacimiento", "txtTelefono"];
     campos.forEach(c => document.getElementById(c).value = "");
+}
+
+function formatearFecha(fechaISO) {
+    if (!fechaISO) return "";
+    const fecha = new Date(fechaISO);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const año = fecha.getFullYear();
+    return `${dia}/${mes}/${año}`;
 }

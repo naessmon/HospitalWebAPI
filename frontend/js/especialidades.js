@@ -29,7 +29,7 @@ function listar() {
                     <td>${e.id}</td>
                     <td>${e.nombre}</td>
                     <td>${e.descripcion}</td>
-                    <td>${e.fechaCreacion ? new Date(e.fechaCreacion).toLocaleDateString() : ''}</td>
+                    <td>${e.fechaCreacion ? formatearFecha(e.fechaCreacion) : ''}</td>
                     <td>${e.activo ? "Activo" : "Inactivo"}</td>
                     <td><button onclick='seleccionar(${JSON.stringify(e)})'>Seleccionar</button></td>
                 `;
@@ -41,7 +41,7 @@ function listar() {
 
 function agregar() {
     const data = recolectarDatos();
-    if (!data.nombre) return alert("El nombre es obligatorio");
+    if (!data.nombre) return showAlert("El nombre es obligatorio", "info");
 
     fetch(urlApi, {
         method: 'POST',
@@ -55,19 +55,19 @@ function agregar() {
         return res.json();
     })
     .then(data => {
-        alert("Especialidad guardada");
+        showAlert("Especialidad guardada", "success");
         listar();
         limpiar();
     })
     .catch(err => {
         console.error("Error al guardar:", err);
-        alert("Error al guardar la especialidad: " + err.message);
+        showAlert("Error al guardar la especialidad: " + err.message, "error");
     });
 }
 
 function modificar() {
     const id = document.getElementById("txtId").value;
-    if (!id) return alert("Seleccione una especialidad primero");
+    if (!id) return showAlert("Seleccione una especialidad primero", "info");
 
     const data = recolectarDatos();
     data.id = parseInt(id);
@@ -88,38 +88,41 @@ function modificar() {
         return res.json();
     })
     .then(data => {
-        alert("Especialidad actualizada");
+        showAlert("Especialidad actualizada", "success");
         listar();
         limpiar();
     })
     .catch(err => {
         console.error("Error al actualizar:", err);
-        alert("Error al actualizar la especialidad: " + err.message);
+        showAlert("Error al actualizar la especialidad: " + err.message, "error");
     });
 }
 
 function eliminar() {
     const id = document.getElementById("txtId").value;
-    if (!id) return alert("Seleccione una especialidad");
+    if (!id) return showAlert("Seleccione una especialidad", "info");
 
-    if (confirm("¿Desea eliminar esta especialidad?")) {
-        fetch(`${urlApi}/${id}`, { method: 'DELETE' })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`Error HTTP: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(data => {
-                alert("Especialidad eliminada");
-                listar();
-                limpiar();
-            })
-            .catch(err => {
-                console.error("Error al eliminar:", err);
-                alert("Error al eliminar la especialidad: " + err.message);
-            });
-    }
+    showConfirm("¿Desea eliminar esta especialidad?")
+        .then(confirmed => {
+            if (confirmed) {
+                fetch(`${urlApi}/${id}`, { method: 'DELETE' })
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error(`Error HTTP: ${res.status}`);
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        showAlert("Especialidad eliminada", "success");
+                        listar();
+                        limpiar();
+                    })
+                    .catch(err => {
+                        console.error("Error al eliminar:", err);
+                        showAlert("Error al eliminar la especialidad: " + err.message, "error");
+                    });
+            }
+        });
 }
 
 function recolectarDatos() {
@@ -141,4 +144,13 @@ function limpiar() {
     document.getElementById("txtId").value = "";
     document.getElementById("txtNombre").value = "";
     document.getElementById("txtDescripcion").value = "";
+}
+
+function formatearFecha(fechaISO) {
+    if (!fechaISO) return "";
+    const fecha = new Date(fechaISO);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const año = fecha.getFullYear();
+    return `${dia}/${mes}/${año}`;
 }
